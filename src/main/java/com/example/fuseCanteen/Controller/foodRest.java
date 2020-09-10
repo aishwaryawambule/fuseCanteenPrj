@@ -27,7 +27,7 @@ public class foodRest {
 
     /** Under Consideraiton not fully completed (W.I.P)
      * Uses table foodItems and foodTypeMapping
-     * From here -,-
+     * From here
      * **/
 
     @GetMapping("public/all-food-names")
