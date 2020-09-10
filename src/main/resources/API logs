@@ -1,0 +1,253 @@
+
+by admin:
+// for token generation
+
+GET:::: localhost:8080/api/public/token-create
+
+{
+
+    "username":"Yabesh",
+    "password":"admin@123",
+    "empNo":"Y01"
+}
+
+//Get all users
+
+GET:::: localhost:8080/api/secure/all-users
+
+**** W.I.P ****
+**** inserting into foodItems multiple
+POST::: localhost:8080/api/secure/insert-food-by-type/1
+
+[
+    {
+        "foodCode": "F05",
+        "foodName": "Mo:Mo",
+        "foodType": "Chicken",
+        "foodPrice": 120.00
+
+}
+]
+
+//Get all foods
+GET:::: localhost:8080/api/public/all-foods
+
+//insert single food items:
+POST:::: localhost:8080/api/secure/insert-food
+
+{
+        "foodName": "Aloo sadheko",
+        "foodCode": "A05",
+        "foodPrice": 50.00
+}
+
+//insert multiple food items:
+POST:::: localhost:8080/api/secure/insert-food-list
+
+[
+    {
+        "foodName": "Chicken Fry Rice",
+        "foodCode": "FR1",
+        "foodPrice": 90.00
+},
+{
+        "foodName": "Aanda Chua",
+        "foodCode": "A04",
+        "foodPrice": 60.00
+}
+]
+
+// update single food
+PUT:: localhost:8080/api/secure/update-food
+{
+    "id": 11,
+    "foodName":"Chura Tarkari Set",
+    "foodCode" : "F05",
+    "foodPrice" : 100
+}
+
+
+// update multiple food
+PUT:: localhost:8080/api/secure/update-food-list
+[{
+    "id": 15,
+    "foodName":"Samosa Chat",
+    "foodCode" : "S05",
+    "foodPrice" : 20
+},
+{
+    "id": 16,
+    "foodName":"pakora",
+    "foodCode" : "P01",
+    "foodPrice" : 40
+}
+]
+
+// delete single food for those orders that are still not placed anywhere
+
+DELETE:: localhost:8080/api/secure/delete-food/Aanda Chua
+
+// delete multiple food for those orders that are still not placed anywhere
+
+DELETE:: localhost:8080/api/secure/delete-food-list/Chicken Fry Rice,Chicken Pasta
+
+// delete all food
+DELETE:: localhost:8080/api/secure/delete-food-all
+
+// GET today's menu
+GET:: localhost:8080/api/public/todays-menu/Monday
+
+
+// GET order list by date:
+GET:: localhost:8080/api/secure/order-list/2020-09-4
+GET:: localhost:8080/api/secure/order-list/null or '' for today's order
+
+//Get order by popularity (only for paid orders)
+GET:: localhost:8080/api/secure/order-by-popularity/2020-09-07/
+localhost:8080/api/secure/order-by-popularity/ null or '' for today's order
+
+::::::::::::::::for employees
+
+// GET historic order by employees (for all paid and unpaid orders)
+GET:: localhost:8080/api/user/historic-order-by-employee?employeeNumber=R01
+
+// GET food request list for today
+http://localhost:8080/api/user/get-food-order-req?employeeNumber=R01
+
+// GET order by employee total
+##Paid
+http://localhost:8080/api/user/order-by-employee?date=2020-09-05&employeeNumber=R01&paymentFlag=paid
+
+##Unpaid
+http://localhost:8080/api/user/order-by-employee?date=2020-09-05&employeeNumber=R01&paymentFlag=
+
+
+// Post order by employee
+
+POST ::::
+http://localhost:8080/api/user/post-order-by-employee/0/?employeeNumber=R01&paymentFlag=unpaid
+http://localhost:8080/api/user/post-order-by-employee/0/?employeeNumber=R01&paymentFlag=paid
+
+[
+    {
+        "userName":"Ruben",
+        "foodName":"French Fries",
+        "orderQty":2,
+        "foodPrice":80
+    }
+]
+
+
+// update order by employee
+PUT ::::
+http://localhost:8080/api/user/update-order-by-employee?employeeNumber=R01
+
+[
+    {
+        "id": 9,
+        "userName": "Ruben",
+        "foodName": "Chura Tarkari Set",
+        "orderQty": 2,
+        "orderStatus": "IN_PROCESS",
+        "paidStatus": "PAID"
+    }
+]
+
+[
+     {
+           "id": 9,
+           "userName": "Ruben",
+           "foodName": "Chura Tarkari Set",
+           "orderQty": 2,
+           "orderStatus": "IN_PROCESS",
+           "paidStatus": "PAID"
+       },
+      {
+        "id": 9,
+        "userName": "Ruben",
+        "foodName": "Alu Puri",
+        "orderQty": 1,
+        "orderStatus": "READY",
+        "paidStatus": "UNPAID"
+    }
+]
+
+#DELETE:::: must not be on scheduled order
+http://localhost:8080/api/user/delete-order-by-employee?employeeNumber=R01
+[2,3]
+
+
+insert scheduled order for today only and view orders for today only
+# POST:::::
+http://localhost:8080/api/user/post-schedueld-order-by-employee/?employeeNumber=R01&isScheduled=yes
+
+
+[
+    {
+        "userName":"Ruben",
+        "foodName":"French Fries",
+        "orderQty":2,
+        "foodPrice":80,
+        "scheduledTime":"2020-09-10 03:00:00"
+    }
+]
+
+only publish the scheduled records not insert it
+
+http://localhost:8080/api/user/post-schedueld-order-by-employee/?employeeNumber=R01&isScheduled=no
+
+
+
+***** food request for today only
+
+#POST:::
+http://localhost:8080/api/user/post-food-request?employeeNumber=R01
+[
+    {
+        "foodName":"pakora",
+        "remarks":"food Requested for today!"
+    }
+]
+
+
+#GET:::
+
+http://localhost:8080/api/user/get-food-order-req?employeeNumber=R01
+
+
+#PUT:::
+for single
+http://localhost:8080/api/user/update-food-req/?employeeNumber=R01
+
+[
+    {
+        "id": 9,
+        "foodName":"Alu Puri",
+        "remarks":"food Requested for today!"
+    }
+]
+
+
+for multiple
+
+
+[
+    {
+        "id": 6,
+        "foodName":"Veg Chowmein",
+        "remarks":"Veg Chowmein Requested for today!"
+    },
+      {
+        "id": 5,
+        "foodName":"Chicken Burger",
+        "remarks":"Chicken Burger Requested for today!"
+    }
+]
+
+
+#DELETE::::
+
+http://localhost:8080/api/user/delete-food-request?employeeNumber=R01
+[4]
+
+
